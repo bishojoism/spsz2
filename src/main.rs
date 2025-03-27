@@ -47,7 +47,7 @@ impl MyApp {
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &eframe::egui::Context, _frame: &mut eframe::Frame) {
         eframe::egui::CentralPanel::default().show(ctx, |ui| {
-            ui.label("加密会把图片大小变为原来的3x3=9倍，故建议加密之前先把视频压到360p！");
+            ui.label("加密会把画面大小变为原来的3x3=9倍，故建议加密之前先把视频压到360p！");
             ui.horizontal(|ui| {
                 ui.label("密码：");
                 ui.text_edit_singleline(&mut self.seed);
