@@ -9,6 +9,8 @@ const N: usize = 120;
 pub fn jiami(input: &str, seed: &str) -> ChildStdout {
     let binding = String::from_utf8(
         Command::new("ffprobe")
+            .arg("-user_agent")
+            .arg("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0")
             .arg("-v")
             .arg("error")
             .arg("-select_streams")
@@ -40,6 +42,8 @@ pub fn jiami(input: &str, seed: &str) -> ChildStdout {
     let enlarged_width = w * N;
     let enlarged_height = h * N;
     let enlarged = Command::new("ffmpeg")
+        .arg("-user_agent")
+        .arg("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0")
         .arg("-i")
         .arg(input)
         .arg("-vf")
@@ -117,7 +121,8 @@ pub fn jiami(input: &str, seed: &str) -> ChildStdout {
 
     let length = result.iter().fold(0, |acc, (_, size)| acc + size);
     let reduced_width = (length.to_f64() / N.to_f64() * width.to_f64() / 2.0).round() as usize * 2;
-    let reduced_height = (length.to_f64() / N.to_f64() * height.to_f64() / 2.0).round() as usize * 2;
+    let reduced_height =
+        (length.to_f64() / N.to_f64() * height.to_f64() / 2.0).round() as usize * 2;
     let reduced = Command::new("ffmpeg")
         .arg("-i")
         .arg("-")
@@ -141,6 +146,8 @@ const M: usize = n2m(N);
 pub fn jiemi(input: &str, seed: &str) -> ChildStdout {
     let binding = String::from_utf8(
         Command::new("ffprobe")
+            .arg("-user_agent")
+            .arg("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0")
             .arg("-v")
             .arg("error")
             .arg("-select_streams")
@@ -172,6 +179,8 @@ pub fn jiemi(input: &str, seed: &str) -> ChildStdout {
     let enlarged_width = w * M;
     let enlarged_height = h * M;
     let enlarged = Command::new("ffmpeg")
+        .arg("-user_agent")
+        .arg("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36 Edg/134.0.0.0")
         .arg("-i")
         .arg(input)
         .arg("-vf")
@@ -238,7 +247,8 @@ pub fn jiemi(input: &str, seed: &str) -> ChildStdout {
 
     let length = result.len();
     let reduced_width = (length.to_f64() / M.to_f64() * width.to_f64() / 2.0).round() as usize * 2;
-    let reduced_height = (length.to_f64() / M.to_f64() * height.to_f64() / 2.0).round() as usize * 2;
+    let reduced_height =
+        (length.to_f64() / M.to_f64() * height.to_f64() / 2.0).round() as usize * 2;
     let reduced = Command::new("ffmpeg")
         .arg("-i")
         .arg("-")

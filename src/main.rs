@@ -8,6 +8,7 @@ mod spsz;
 
 struct MyApp {
     seed: String,
+    url: String,
     input: String,
     output: String,
 }
@@ -16,6 +17,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             seed: String::new(),
+            url: String::new(),
             input: String::new(),
             output: String::new(),
         }
@@ -45,9 +47,27 @@ impl MyApp {
 impl eframe::App for MyApp {
     fn update(&mut self, ctx: &eframe::egui::Context, _frame: &mut eframe::Frame) {
         eframe::egui::CentralPanel::default().show(ctx, |ui| {
+            ui.label("加密会把图片大小变为原来的3x3=9倍，故建议加密之前先把视频压到360p！");
             ui.horizontal(|ui| {
                 ui.label("密码：");
                 ui.text_edit_singleline(&mut self.seed);
+            });
+            ui.horizontal(|ui| {
+                ui.label("网址：");
+                ui.text_edit_singleline(&mut self.url);
+                if ui.button("解析").clicked() {
+                    let client = reqwest::blocking::Client::new();
+                    let response = client
+                        .post("https://sve-api.itcox.cn/public/parseVideo")
+                        .header("Content-Type", "application/json")
+                        .body(serde_json::json!({"url": self.url}).to_string())
+                        .send()
+                        .expect("failed to send request");
+                    let text = response.text().expect("failed to read response");
+                    let json: serde_json::Value =
+                        serde_json::from_str(&text).expect("failed to parse json");
+                    self.input = json["data"]["videoUrl"].as_str().expect("failed to get videoUrl").to_string();
+                }
             });
             ui.horizontal(|ui| {
                 ui.label("输入：");
